@@ -1,9 +1,0 @@
-Metadata-Version: 2.2
-Name: earthquake-notifier
-Version: 1.0.0
-Requires-Dist: firebase-functions==0.4.2
-Requires-Dist: firebase-admin==6.2.0
-Requires-Dist: functions-framework==3.5.0
-Requires-Dist: requests==2.31.0
-Requires-Dist: pushbullet.py==0.12.0
-Requires-Dist: python-dotenv==1.0.0

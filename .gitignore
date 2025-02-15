@@ -67,3 +67,30 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Python virtual environments
+venv/
+env/
+ENV/
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Firebase logs and cache
+firebase-debug.log
+.firebase/
+ui-debug.log
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db
