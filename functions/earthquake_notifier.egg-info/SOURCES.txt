@@ -1,0 +1,7 @@
+main.py
+pyproject.toml
+earthquake_notifier.egg-info/PKG-INFO
+earthquake_notifier.egg-info/SOURCES.txt
+earthquake_notifier.egg-info/dependency_links.txt
+earthquake_notifier.egg-info/requires.txt
+earthquake_notifier.egg-info/top_level.txt

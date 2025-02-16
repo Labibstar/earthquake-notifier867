@@ -7,6 +7,13 @@ import requests
 from pushbullet import Pushbullet
 import os
 import json
+from dotenv import load_dotenv
+import logging
+
+load_dotenv()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Initialize Firebase Admin SDK
 try:
@@ -17,7 +24,7 @@ except ValueError:
 # Constants for Dhaka's coordinates and search radius
 DHAKA_LAT = 23.8103
 DHAKA_LON = 90.4125
-SEARCH_RADIUS_KM = 300
+SEARCH_RADIUS_KM = 600
 
 def calculate_distance(lat1, lon1, lat2, lon2):
     """Calculate distance between two points using Haversine formula"""
@@ -51,14 +58,14 @@ def check_earthquakes(request: https_fn.Request) -> https_fn.Response:
     headers = {'Access-Control-Allow-Origin': '*'}
     
     # Get Pushbullet API key
-    pb_api_key = "o.8ML4iPw7ToeEKFZFVMU4wJgAAd7EazNQ"
+    pb_api_key = os.getenv('PUSHBULLET_API_KEY')
     
     try:
         pb = Pushbullet(pb_api_key)
         
         # Get earthquake data from USGS
         end_time = datetime.utcnow()
-        start_time = end_time - timedelta(minutes=10)
+        start_time = end_time - timedelta(minutes=5)
         
         url = f"https://earthquake.usgs.gov/fdsnws/event/1/query"
         params = {
@@ -70,7 +77,17 @@ def check_earthquakes(request: https_fn.Request) -> https_fn.Response:
             'maxradiuskm': SEARCH_RADIUS_KM
         }
         
+        logging.info(f"Requesting USGS API with parameters: {params}")
         response = requests.get(url, params=params)
+        logging.info(f"Received response from USGS API: {response.json()}")
+        
+        if response.status_code != 200:
+            logging.error(f"Error calling USGS API: {response.status_code} - {response.text}")
+            return https_fn.Response(json.dumps({
+                'status': 'error',
+                'message': 'Failed to retrieve earthquake data from USGS API'
+            }), 500, headers)
+        
         data = response.json()
         
         earthquakes_found = []
